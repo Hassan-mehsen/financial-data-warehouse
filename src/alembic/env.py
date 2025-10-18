@@ -14,11 +14,22 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+database_url = os.getenv("DATABASE_URL")
+if database_url:
+    # overwriting the sqlalchemy.url in the .ini file
+    config.set_main_option("sqlalchemy.url", database_url)
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+from db.base import all_metadata
+target_metadata = all_metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -65,7 +76,10 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, 
+            target_metadata=target_metadata,
+            compare_type=True,  # follow columns type changes
+            include_schemas=True, # include schemas name in the DDL statements
         )
 
         with context.begin_transaction():
