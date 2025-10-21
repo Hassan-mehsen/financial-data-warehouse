@@ -4,7 +4,7 @@ Each table stores the full JSON list returned by an FMP API call.
 Data is inserted as-is, with UTC ingestion timestamps handled by PostgreSQL.
 """
 
-from sqlalchemy import Table, Column, Integer, text, JSON, TIMESTAMP, MetaData
+from sqlalchemy import Table, Column, Integer, text, JSON, TIMESTAMP, MetaData, String
 
 metadata_raw = MetaData(schema="raw")
 
@@ -16,6 +16,7 @@ def create_raw_table(name: str) -> Table:
         metadata_raw,
         Column("id", Integer, primary_key=True, autoincrement=True),
         Column("json_list", JSON, nullable=False),
+        Column("source",String(100),nullable=False),
         Column(
             "ingestion_ts",
             TIMESTAMP(timezone=False),
