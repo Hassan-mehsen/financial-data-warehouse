@@ -32,6 +32,16 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
     base_url = "https://financialmodelingprep.com"
     api_version = "/stable"
 
+    # Companies accessible in free FMP plan
+    available_companies = [
+            "AAPL", "AAL", "ABBV", "ADBE", "AMZN", "AMD", "ATVI", "BABA", "BA", "BAC", "BILI", "BIDU", "C", "CARR", "CCL",
+            "COIN", "COST", "CSCO", "CVX", "CPRX", "DAL", "DIS", "DOCU", "ET", "ETSY", "F", "FDX", "FUBO", "GE", "GM", "GOOGL",
+            "GS", "HCA", "HOOD", "INTC", "JNJ", "JPM", "KO", "LCID", "LMT", "META", "MGM", "MRNA", "MRO", "MSFT", "NIO", "NKE",
+            "NOK", "NVDA", "PEP", "PFE", "PINS", "PLTR", "PYPL", "RBLX", "RIVN", "RIOT", "ROKU", "RKT", "SBUX", "SHOP", "SNAP",
+            "SOFI", "SONY", "SPY", "SPYG", "SQ", "SIRI", "T", "TGT", "TSM", "TSLA", "TLRY", "TWTR", "UAL", "UBER", "UNH", "V",
+            "VIAC", "VWO", "VZ", "WBA", "WFC", "WMT", "XOM", "ZM"
+        ]
+
     log_path = Path(__file__).resolve().parents[2] / "logs" / "ingestion.log"
 
     def __init__(self, source: str, table: str):
@@ -107,8 +117,8 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
                 f.write("\n" + "=" * 50 + "\n")
                 f.write(header.center(50))
                 f.write("\n" + "=" * 50 + "\n")
-
-            f.write(full_message + "\n")
+            if message :
+                f.write(full_message + "\n")
 
     def _build_url(self, endpoint: str, query: str) -> str:
         """
