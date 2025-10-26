@@ -39,8 +39,8 @@ class CompanyProfileELJob(ExtractLoadPipeline):
 
         self._log(header="EXTRACTING End - endpoint : Company Profile")
 
+        self._log(header="LOADING Start - endpoint : Company Profile")
         if all_data:
-            self._log(header="LOADING Start - endpoint : Company Profile")
             self._log(message=f"Batch size: {len(all_data)} symbols collected. Starting load...", phase="LOAD")
             self.load(all_data)
 

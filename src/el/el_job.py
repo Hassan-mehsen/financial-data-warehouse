@@ -112,7 +112,7 @@ class ExtractLoadPipeline(DatabaseConnector, ABC):
             if header:
                 f.write("\n" + "=" * 50 + "\n")
                 f.write(header.center(50))
-                f.write("\n" + "=" * 50 + "\n")
+                f.write("\n" + "=" * 50 + "\n\n")
             if message :
                 timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
                 full_message = f"[{timestamp}] [{phase.upper()}] [{self.source.upper()}] {message}"
