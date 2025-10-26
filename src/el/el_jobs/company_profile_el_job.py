@@ -9,14 +9,14 @@ class CompanyProfileELJob(ExtractLoadPipeline):
     MAX_RETRIES = 3
 
     def __init__(self):
-        super().__init__(source="FMP - Company Profile", table=company_profile)
+        super().__init__(source="FMP-Company Profile", table=company_profile)
 
     def run(self):
         """Main execution method for extracting and loading company profiles."""
         all_data = []
 
-        self._log(header="EXTRACTING Start - Company Profile")
-        self._log("Starting batch extraction...", phase="EXTRACT")
+        self._log(header="EXTRACTING Start - endpoint : Company Profile")
+        self._log(message="Starting batch extraction...", phase="EXTRACT")
 
         for symbol in self.available_companies:
             attempt = 1
@@ -25,7 +25,7 @@ class CompanyProfileELJob(ExtractLoadPipeline):
             if not data:
                 while attempt <= self.MAX_RETRIES:
                     self._log(
-                        f"Retry {attempt}/{self.MAX_RETRIES} - failed to extract company profile for {symbol}. Retrying in {2**attempt}s...",
+                        message=f"Retry {attempt}/{self.MAX_RETRIES} - failed to extract company profile for {symbol}. Retrying in {2**attempt}s...",
                         phase="EXTRACT",
                     )
                     sleep(2**attempt)
@@ -37,14 +37,14 @@ class CompanyProfileELJob(ExtractLoadPipeline):
             if data:
                 all_data.append(data)
 
-        self._log(header="EXTRACTING End - Company Profile")
+        self._log(header="EXTRACTING End - endpoint : Company Profile")
 
         if all_data:
-            self._log(header="LOADING Start - Company Profile")
-            self._log(f"Batch size: {len(all_data)} symbols collected. Starting load...", phase="LOAD")
+            self._log(header="LOADING Start - endpoint : Company Profile")
+            self._log(message=f"Batch size: {len(all_data)} symbols collected. Starting load...", phase="LOAD")
             self.load(all_data)
 
         else:
-            self._log("No data collected.", phase="LOAD")
+            self._log(message="No data collected.", phase="LOAD")
 
-        self._log(header="LOADING End - Company Profile")
+        self._log(header="LOADING End - endpoint : Company Profile")

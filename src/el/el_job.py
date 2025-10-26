@@ -11,7 +11,7 @@ import os
 load_dotenv()
 
 
-class ExtractLoadPipeline(ABC, DatabaseConnector):
+class ExtractLoadPipeline(DatabaseConnector, ABC):
     """
     Abstract base class for unified Extract & Load (EL) pipelines from the FMP API.
 
@@ -52,31 +52,30 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
 
     def extract(self, endpoint: str, query: str = "") -> Optional[List[dict]]:
         """Extract data from Financial Modeling Prep API and return JSON response."""
-        self._log("Starting extraction...", phase="Extract")
 
         if not self.api_key:
             error_msg = "FMP key not found in environment variables."
-            self._log(error_msg)
+            self._log(message=error_msg,  phase="Extract")
             raise ValueError(error_msg)
 
         url = self._build_url(endpoint=endpoint, query=query)
 
         try:
-            self._log(f"Sending request to {url}")
+            self._log(message=f"Sending request to {url}",  phase="Extract")
             response = self.session.get(url, timeout=10)
             response.raise_for_status()
             data = response.json()
             record_count = len(data) if isinstance(data, list) else 1
-            self._log(f"Response received with status {response.status_code} - {record_count} records fetched")
+            self._log(message=f"Response received with status {response.status_code} - {record_count} records fetched", phase="Extract")
             return data
 
         except requests.RequestException as exception:
-            self._log(f"API request failed: {exception}")
+            self._log(message=f"API request failed: {exception}",  phase="Extract")
             return None
 
     def load(self, raw_data: list[dict]) -> None:
         """Load the API response into the raw table"""
-        self._log("Starting load...", phase="LOAD")
+        self._log(message="Starting load...", phase="LOAD")
 
         row = {"json_list": raw_data, "source": self.source}
         stmt = insert(self.table)
@@ -85,10 +84,10 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
             # write the data
             with self.engine.begin() as conn:
                 conn.execute(stmt, row)
-            self._log(f"Load done - 1 record inserted", phase="LOAD")
+            self._log(message=f"Load done - 1 record inserted", phase="LOAD")
 
         except Exception as e:
-            self._log(f"Failed to insert the data: {e}", phase="LOAD")
+            self._log(message=f"Failed to insert the data: {e}", phase="LOAD")
 
     @abstractmethod
     def run(self):
@@ -99,7 +98,7 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
     #                   Private helpers
     # ---------------------------------------------------------
 
-    def _log(self, message: str, header: str, phase: str):
+    def _log(self, header: str = None, message: str = None, phase: str = None):
         """
         Write a formatted, timestamped log entry to the EL log file.
 
@@ -108,9 +107,6 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
             header (str, optional): Optional section header displayed as a separator block.
             phase (str, optional): Current EL phase (EXTRACT or LOAD).
         """
-        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-        full_message = f"[{timestamp}] [{phase.upper()}] [{self.source.upper()}] {message}"
-
         with open(self.log_path, "a") as f:
 
             if header:
@@ -118,6 +114,8 @@ class ExtractLoadPipeline(ABC, DatabaseConnector):
                 f.write(header.center(50))
                 f.write("\n" + "=" * 50 + "\n")
             if message :
+                timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+                full_message = f"[{timestamp}] [{phase.upper()}] [{self.source.upper()}] {message}"
                 f.write(full_message + "\n")
 
     def _build_url(self, endpoint: str, query: str) -> str:
