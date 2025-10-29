@@ -23,7 +23,7 @@ class IncomeStatementELJob(ExtractLoadPipeline):
             for period in self.period:
                 data = self.extract(endpoint="/income-statement", query=f"symbol={symbol}&period={period}")
 
-                if not data:
+                if not data and self.status_code != 200:
                     for attempt in range(1, self.MAX_RETRIES + 1):
                         self._log(
                             message=f"Retry {attempt}/{self.MAX_RETRIES} - failed to extract income statement data for {symbol} in period {period}. Retrying in {2**attempt}s...",
@@ -42,6 +42,7 @@ class IncomeStatementELJob(ExtractLoadPipeline):
 
         if all_data:
             self.load(all_data)
+            self._log(message=f"Batch size: {len(all_data)} income statements.", phase="LOAD")
         else:
             self._log(message="No data collected.", phase="LOAD")
 
