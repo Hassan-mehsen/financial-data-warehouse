@@ -4,7 +4,7 @@ from time import sleep
 
 
 class SharesFloatELJob(ExtractLoadPipeline):
-    """Extract and load all shares float data from FMP API."""
+    """Extract and load all shares float data from /shares-float-all endpoint of FMP API with retry mechanism."""
 
     MAX_RETRIES = 3
 
@@ -13,14 +13,14 @@ class SharesFloatELJob(ExtractLoadPipeline):
         self.page = 0
         self.limit = 5000
 
-    def run(self):
-        """Main execution method for extracting and loading shares float."""
+    def run(self) -> None:
+        """Main execution method for extracting and loading shares float data"""
 
-        self._log(header="EXTRACTING Start - endpoint : All Shares Float")
+        self._log(header="EXTRACTING Start - endpoint: All Shares Float")
         self._log(message="Starting extraction...", phase="EXTRACT")
 
         data = self.extract(endpoint="/shares-float-all", query=f"page={self.page}&limit={self.limit}")
-        if not data:
+        if not data and self.status_code != 200:
             for attempt in range(1, self.MAX_RETRIES + 1):
                 self._log(
                     message=f"Retry {attempt}/{self.MAX_RETRIES} - failed to extract All Shares Float. Retrying in {2**attempt}s...",
@@ -30,13 +30,15 @@ class SharesFloatELJob(ExtractLoadPipeline):
                 data = self.extract(endpoint="/shares-float-all", query=f"page={self.page}&limit={self.limit}")
                 if data:
                     break
-        self._log(header="EXTRACTING End - endpoint : All Shares Float")
 
-        self._log(header="LOADING Start - endpoint : All Shares Float")
+        self._log(header="EXTRACTING End - endpoint: All Shares Float")
+
+        self._log(header="LOADING Start - endpoint: All Shares Float")
+
         if data:
-            self._log(message=f"Batch size: {len(data)} shares collected. Starting load...", phase="LOAD")
             self.load(data)
+            self._log(message=f"Batch size: {len(data)} shares", phase="LOAD")
         else:
             self._log(message="No data collected.", phase="LOAD")
 
-        self._log(header="LOADING End - endpoint : All Shares Float")
+        self._log(header="LOADING End - endpoint: All Shares Float")
