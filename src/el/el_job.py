@@ -49,6 +49,7 @@ class ExtractLoadPipeline(DatabaseConnector, ABC):
         self.source = source
         self.table = table  # sqlalchemy table  object passed by child classes
         self.session = requests.Session()
+        self.status_code = None
 
     def extract(self, endpoint: str, query: str = "") -> Optional[List[dict]]:
         """Extract data from Financial Modeling Prep API and return JSON response."""
@@ -64,9 +65,10 @@ class ExtractLoadPipeline(DatabaseConnector, ABC):
             self._log(message=f"Sending request to {url}",  phase="Extract")
             response = self.session.get(url, timeout=10)
             response.raise_for_status()
+            self.status_code = response.status_code
             data = response.json()
             record_count = len(data) if isinstance(data, list) else 1
-            self._log(message=f"Response received with status {response.status_code} - {record_count} records fetched", phase="Extract")
+            self._log(message=f"Response received with status {self.status_code} - {record_count} records fetched", phase="Extract")
             return data
 
         except requests.RequestException as exception:
@@ -98,7 +100,7 @@ class ExtractLoadPipeline(DatabaseConnector, ABC):
     #                   Private helpers
     # ---------------------------------------------------------
 
-    def _log(self, header: str = None, message: str = None, phase: str = None):
+    def _log(self, header: str = None, message: str = None, phase: str = None)-> None:
         """
         Write a formatted, timestamped log entry to the EL log file.
 
