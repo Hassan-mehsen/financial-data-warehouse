@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw schema loaded directly from EL (Extract-Load) jobs"
+    database: finance_dwh
+    schema: raw
+
+    tables:
+      - name: company_profile
+        description:  "Raw data about companies basic information and metadata"
+      - name: stock_quotes
+        description: "Raw stock market quotes from the API for each company"
+      - name: shares_float
+        description: "Raw shares float data per company"
+      - name: price_changes
+        description: "Raw data tracking stock price variations over time periods for each company"
+      - name: income_stmt
+        description: "Raw income statement data for each company"
+      - name: balance_sheet_stmt
+        description: "Raw balance sheet statement data for each company"
+      - name: cash_flow_stmt
+        description: "Raw cash flow statement data for each company"
+      - name: company_dividends
+        description: "Raw companies dividend distributions data"
+      - name: earnings_reports
+        description: "Raw companies earnings reports"
+      - name: stock_splits
+        description: "Raw data about stock split for each company"
