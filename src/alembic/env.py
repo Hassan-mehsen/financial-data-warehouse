@@ -28,8 +28,8 @@ if database_url:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from db.base import all_metadata
-target_metadata = all_metadata
+from db.raw_schema import metadata_raw
+target_metadata = metadata_raw
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -78,8 +78,9 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection, 
             target_metadata=target_metadata,
-            compare_type=True,  # follow columns type changes
             include_schemas=True, # include schemas name in the DDL statements
+            compare_type=False, 
+            compare_server_default = False
         )
 
         with context.begin_transaction():
