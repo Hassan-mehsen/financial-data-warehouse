@@ -30,14 +30,20 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
+
+seeds:
+  financial_market:
+    +schema: raw
+    +quote_columns: false
+
 models:
   financial_market:
     # Config indicated by + and applies to all files under models/example/
     +persist_docs:
-      columns: true
+      columns: false
       
     staging:
-      #+schema: staging   #Already specified in profiles.yml
+      +schema: staging   
       +materialized: view
       +tags: ["silver"]
     
@@ -46,3 +52,15 @@ models:
       +materialized: incremental
       +tags: ["gold"]
       
+      company: 
+        +materialized: table 
+        +tags: ["dim", "info"]
+
+      corporate_actions:
+        +tags: ["events", "corporate"]
+
+      financial_statement:
+        +tags: ["financials", "statements"]
+      
+      market: 
+        +tags: ["market", "price"]
