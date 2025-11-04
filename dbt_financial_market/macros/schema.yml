@@ -13,4 +13,4 @@ macros:
 
 
   - name: generate_schema_name
-    description: "Generates schema name based on model layer (staging, marts) without prefixing the default target schema."
+    description: "Generates schema name based on custom schema name without prefixing the default target schema."
