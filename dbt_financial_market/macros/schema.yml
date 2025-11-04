@@ -1,0 +1,16 @@
+version: 2
+
+macros:
+
+  - name: bigint_safe_cast_dict
+    description: >
+      Iterates through a dictionary of JSON fields and aliases, applying a safe conversion
+      to BIGINT while preserving NULL values. Helps to guarantee robustness.
+    arguments:
+      - name: columns_map
+        type: dict
+        description: Mapping of JSON extraction expressions to output aliases.
+
+
+  - name: generate_schema_name
+    description: "Generates schema name based on model layer (staging, marts) without prefixing the default target schema."
