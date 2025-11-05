@@ -22,9 +22,6 @@ renamed_and_typed AS (
     FROM extend_json
 )
 
--- removing duplicates and keeping the most recent row 
-
-SELECT DISTINCT ON (symbol, date_key,last_updated)  *
+SELECT *
 FROM renamed_and_typed
 WHERE date_key IS NOT NULL AND symbol IS NOT NULL
-ORDER BY symbol, date_key, last_updated DESC
