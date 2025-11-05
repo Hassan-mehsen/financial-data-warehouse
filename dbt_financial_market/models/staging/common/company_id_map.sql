@@ -1,5 +1,13 @@
 
 --  persist the table, protect it from full refresh to stabilize ids
+
+{% if flags.FULL_REFRESH %}
+
+  {% do exceptions.raise_compiler_error("\n\n\t\t[ERROR]: Full refresh is not allowed for this model\n\n") %}
+
+{% endif %}
+
+
 {{  config( 
         materialized = 'incremental', 
         unique_key = 'symbol',
