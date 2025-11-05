@@ -10,6 +10,7 @@ WITH extend_json AS(
 renamed_and_typed AS (
     SELECT
        NULLIF( (elem->>'symbol'), '')::VARCHAR(50)          AS symbol,
+       TO_CHAR(ingestion_ts::date, 'YYYYMMDD')::integer     AS date_key, 
        NULLIF( (elem->>'1D'), '')::numeric(16,6)            AS change_pct_on_1d,
        NULLIF( (elem->>'5D'), '' )::numeric(16,6)           AS change_pct_on_5d,  
        NULLIF( (elem->>'1M'), '' )::numeric(16,6)           AS change_pct_on_1m,
