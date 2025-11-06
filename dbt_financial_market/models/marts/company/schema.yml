@@ -10,7 +10,7 @@ models:
         tests: ["not_null","unique"]
 
       - name: symbol
-        description: "{{ doc('symbol') }}"
+        description: "stock ticker symbol identifying each company in the dataset"
 
       - name: company_name
         description: "Full legal or trading name of the company."
