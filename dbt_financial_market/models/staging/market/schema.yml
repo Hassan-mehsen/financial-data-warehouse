@@ -1,0 +1,104 @@
+version: 2
+models:
+
+  - name: stg_shares_float
+    description: "Structural contract for company share float data"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: free_float_pct
+        data_type: numeric(10,4)
+      - name: float_shares
+        data_type: numeric(20,2)
+      - name: outstanding_shares
+        data_type: numeric(20,2)
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+
+  - name: stg_price_changes
+    description: "Structural contract for stock price change percentages over multiple time horizons."
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date_key
+        data_type: integer
+      - name: change_pct_on_1d
+        data_type: numeric(16,6)
+      - name: change_pct_on_5d
+        data_type: numeric(16,6)
+      - name: change_pct_on_1m
+        data_type: numeric(16,6)
+      - name: change_pct_on_3m
+        data_type: numeric(16,6)
+      - name: change_pct_on_6m
+        data_type: numeric(16,6)
+      - name: change_pct_ytd
+        data_type: numeric(16,6)
+      - name: change_pct_on_1y
+        data_type: numeric(16,6)
+      - name: change_pct_on_3y
+        data_type: numeric(16,6)
+      - name: change_pct_on_5y
+        data_type: numeric(16,6)
+      - name: change_pct_on_10y
+        data_type: numeric(16,6)
+      - name: change_pct_max
+        data_type: numeric(16,6)
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+
+
+  - name: stg_stock_quotes
+    description: "Structural contract for stock quotes data"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: company_name
+        data_type: varchar(255)
+      - name: stock_price
+        data_type: numeric(16,6)
+      - name: price_change
+        data_type: numeric(16,6)
+      - name: price_change_pct
+        data_type: numeric(10,6)
+      - name: trading_volume
+        data_type: bigint
+      - name: day_low
+        data_type: numeric(16,6)
+      - name: day_high
+        data_type: numeric(16,6)
+      - name: year_low
+        data_type: numeric(16,6)
+      - name: year_high
+        data_type: numeric(16,6)
+      - name: price_avg_50d
+        data_type: numeric(16,6)
+      - name: price_avg_200d
+        data_type: numeric(16,6)
+      - name: market_cap
+        data_type: numeric(20,2)
+      - name: exchange_code
+        data_type: varchar(50)
+      - name: open_price
+        data_type: numeric(16,6)
+      - name: last_close_price
+        data_type: numeric(16,6)
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+ 
