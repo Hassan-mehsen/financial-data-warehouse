@@ -11,7 +11,7 @@
 {{  config( 
         materialized = 'incremental', 
         unique_key = 'symbol',
-        full_refresh = false
+        on_schema_change = 'fail',
     ) 
 }}
 
