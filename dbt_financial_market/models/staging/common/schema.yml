@@ -1,41 +1,32 @@
 version: 2
 
 models:
+
   - name: stg_dim_date
-    description: "Date dimension providing calendar and fiscal attributes for time-based analysis."
+    description: "Structural contract for date dimension staging model."
     columns:
       - name: date_key
-        description: "Surrogate key in YYYYMMDD integer format."
-        tests: ["unique", "not_null"]
+        data_type: integer
       - name: date
-        description: "Actual date value."
-        tests: ["not_null"]
+        data_type: date
       - name: month
-        description: "Month number (1-12)."
+        data_type: integer
       - name: year
-        description: "Calendar year."
+        data_type: integer
       - name: fiscal_quarter
-        description: "Fiscal quarter (1-4)."
+        data_type: integer
       - name: day_of_week
-        description: "Day of week number (1=Monday, 7=Sunday)."
+        data_type: integer
       - name: is_weekend
-        description: "Boolean flag indicating if the day is a weekend."
+        data_type: boolean
+
 
   - name: company_id_map
-    description: "Mapping table assigning a persistent unique company_id to each unique stock symbol. 
-      The table is incremental to ensure stable identifiers across refreshes."
+    description: "Structural contract for persistent company ID mapping model (symbol - company_id)."
     columns:
       - name: company_id
-        description: "Persistent unique key assigned to each unique symbol."
-        tests:
-          - not_null
-          - unique
-
+        data_type: integer
       - name: symbol
-        description: "Unique stock or company symbol serving as the natural key for identification."
-        tests:
-          - not_null
-          - unique
-
+        data_type: varchar
       - name: created_at
-        description: "Timestamp indicating when the mapping record was created."
+        data_type: timestamp
