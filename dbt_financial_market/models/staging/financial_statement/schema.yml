@@ -1,0 +1,324 @@
+version: 2
+models:
+
+  - name: stg_balance_sheet_stmt
+    description: "Structural contract for balance sheet staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: reported_currency
+        data_type: varchar(5)
+      - name: cik
+        data_type: varchar(50)
+      - name: filing_date
+        data_type: date
+      - name: accepted_date
+        data_type: date
+      - name: fiscal_year
+        data_type: integer
+      - name: fiscal_period
+        data_type: varchar(20)
+      - name: fiscal_quarter
+        data_type: integer
+      - name: cash_and_cash_equivalents
+        data_type: bigint
+      - name: short_term_investments
+        data_type: bigint
+      - name: cash_and_short_term_investments
+        data_type: bigint
+      - name: net_receivables
+        data_type: bigint
+      - name: accounts_receivables
+        data_type: bigint
+      - name: other_receivables
+        data_type: bigint
+      - name: inventory
+        data_type: bigint
+      - name: other_current_assets
+        data_type: bigint
+      - name: total_current_assets
+        data_type: bigint
+      - name: property_plant_equipment_net
+        data_type: bigint
+      - name: goodwill
+        data_type: bigint
+      - name: intangible_assets
+        data_type: bigint
+      - name: goodwill_and_intangible_assets
+        data_type: bigint
+      - name: long_term_investments
+        data_type: bigint
+      - name: tax_assets
+        data_type: bigint
+      - name: other_non_current_assets
+        data_type: bigint
+      - name: total_non_current_assets
+        data_type: bigint
+      - name: other_assets
+        data_type: bigint
+      - name: total_assets
+        data_type: bigint
+      - name: total_payables
+        data_type: bigint
+      - name: account_payables
+        data_type: bigint
+      - name: other_payables
+        data_type: bigint
+      - name: accrued_expenses
+        data_type: bigint
+      - name: short_term_debt
+        data_type: bigint
+      - name: capital_lease_obligations_current
+        data_type: bigint
+      - name: tax_payables
+        data_type: bigint
+      - name: deferred_revenue
+        data_type: bigint
+      - name: other_current_liabilities
+        data_type: bigint
+      - name: total_current_liabilities
+        data_type: bigint
+      - name: long_term_debt
+        data_type: bigint
+      - name: deferred_revenue_non_current
+        data_type: bigint
+      - name: deferred_tax_liabilities_non_current
+        data_type: bigint
+      - name: other_non_current_liabilities
+        data_type: bigint
+      - name: total_non_current_liabilities
+        data_type: bigint
+      - name: other_liabilities
+        data_type: bigint
+      - name: capital_lease_obligations
+        data_type: bigint
+      - name: total_liabilities
+        data_type: bigint
+      - name: treasury_stock
+        data_type: bigint
+      - name: preferred_stock
+        data_type: bigint
+      - name: common_stock
+        data_type: bigint
+      - name: retained_earnings
+        data_type: bigint
+      - name: additional_paid_in_capital
+        data_type: bigint
+      - name: accumulated_other_comprehensive_income_loss
+        data_type: bigint
+      - name: other_total_stockholders_equity
+        data_type: bigint
+      - name: total_stockholders_equity
+        data_type: bigint
+      - name: total_equity
+        data_type: bigint
+      - name: total_liabilities_and_equity
+        data_type: bigint
+      - name: minority_interest
+        data_type: bigint
+      - name: total_investments
+        data_type: bigint
+      - name: total_debt
+        data_type: bigint
+      - name: net_debt
+        data_type: bigint
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+
+  - name: stg_cash_flow_stmt
+    description: "Structural contract for cash flow statement staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: reported_currency
+        data_type: varchar(5)
+      - name: cik
+        data_type: varchar(50)
+      - name: filing_date
+        data_type: date
+      - name: accepted_date
+        data_type: date
+      - name: fiscal_year
+        data_type: integer
+      - name: fiscal_period
+        data_type: varchar(20)
+      - name: fiscal_quarter
+        data_type: integer
+      - name: net_income
+        data_type: bigint
+      - name: depreciation_and_amortization
+        data_type: bigint
+      - name: deferred_income_tax
+        data_type: bigint
+      - name: stock_based_compensation
+        data_type: bigint
+      - name: working_capital_changes
+        data_type: bigint
+      - name: accounts_receivables
+        data_type: bigint
+      - name: inventory
+        data_type: bigint
+      - name: accounts_payables
+        data_type: bigint
+      - name: other_working_capital
+        data_type: bigint
+      - name: other_non_cash_items
+        data_type: bigint
+      - name: net_cash_from_operating_activities
+        data_type: bigint
+      - name: investments_in_property_plant_equipment
+        data_type: bigint
+      - name: net_acquisitions
+        data_type: bigint
+      - name: purchases_of_investments
+        data_type: bigint
+      - name: sales_maturities_of_investments
+        data_type: bigint
+      - name: other_investing_activities
+        data_type: bigint
+      - name: net_cash_from_investing_activities
+        data_type: bigint
+      - name: net_debt_issuance
+        data_type: bigint
+      - name: long_term_net_debt_issuance
+        data_type: bigint
+      - name: short_term_net_debt_issuance
+        data_type: bigint
+      - name: net_stock_issuance
+        data_type: bigint
+      - name: net_common_stock_issuance
+        data_type: bigint
+      - name: common_stock_issuance
+        data_type: bigint
+      - name: common_stock_repurchased
+        data_type: bigint
+      - name: net_preferred_stock_issuance
+        data_type: bigint
+      - name: net_dividends_paid
+        data_type: bigint
+      - name: common_dividends_paid
+        data_type: bigint
+      - name: preferred_dividends_paid
+        data_type: bigint
+      - name: other_financing_activities
+        data_type: bigint
+      - name: net_cash_from_financing_activities
+        data_type: bigint
+      - name: effect_of_forex_changes_on_cash
+        data_type: bigint
+      - name: net_change_in_cash
+        data_type: bigint
+      - name: cash_at_end_of_period
+        data_type: bigint
+      - name: cash_at_beginning_of_period
+        data_type: bigint
+      - name: operating_cash_flow
+        data_type: bigint
+      - name: capital_expenditure
+        data_type: bigint
+      - name: free_cash_flow
+        data_type: bigint
+      - name: income_taxes_paid
+        data_type: bigint
+      - name: interest_paid
+        data_type: bigint
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+
+  - name: stg_income_stmt
+    description: "Structural contract for income statement staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: reported_currency
+        data_type: varchar(5)
+      - name: cik
+        data_type: varchar(50)
+      - name: filing_date
+        data_type: date
+      - name: accepted_date
+        data_type: date
+      - name: fiscal_year
+        data_type: integer
+      - name: fiscal_period
+        data_type: varchar(20)
+      - name: fiscal_quarter
+        data_type: integer
+      - name: revenue
+        data_type: bigint
+      - name: cost_of_revenue
+        data_type: bigint
+      - name: gross_profit
+        data_type: bigint
+      - name: rd_expenses
+        data_type: bigint
+      - name: general_admin_expenses
+        data_type: bigint
+      - name: selling_marketing_expenses
+        data_type: bigint
+      - name: sga_expenses
+        data_type: bigint
+      - name: other_expenses
+        data_type: bigint
+      - name: operating_expenses
+        data_type: bigint
+      - name: cost_and_expenses
+        data_type: bigint
+      - name: depreciation_and_amortization
+        data_type: bigint
+      - name: ebitda
+        data_type: bigint
+      - name: ebit
+        data_type: bigint
+      - name: net_interest_income
+        data_type: bigint
+      - name: interest_income
+        data_type: bigint
+      - name: interest_expense
+        data_type: bigint
+      - name: non_operating_income_without_interest
+        data_type: bigint
+      - name: total_other_income_expenses_net
+        data_type: bigint
+      - name: income_before_tax
+        data_type: bigint
+      - name: net_income_continuing_ops
+        data_type: bigint
+      - name: net_income_discontinued_ops
+        data_type: bigint
+      - name: other_adjustments_net_income
+        data_type: bigint
+      - name: net_income
+        data_type: bigint
+      - name: net_income_deductions
+        data_type: bigint
+      - name: weighted_avg_shares_out
+        data_type: bigint
+      - name: weighted_avg_shares_out_diluted
+        data_type: bigint
+      - name: eps
+        data_type: numeric(12,6)
+      - name: eps_diluted
+        data_type: numeric(12,6)
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
