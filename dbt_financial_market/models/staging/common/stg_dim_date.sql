@@ -1,4 +1,10 @@
 
+{{  config( 
+
+        contract={"enforced": True}
+    ) 
+}}
+
 WITH typed as (
 
   SELECT

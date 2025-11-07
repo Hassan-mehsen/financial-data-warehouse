@@ -12,6 +12,7 @@
         materialized = 'incremental', 
         unique_key = 'symbol',
         on_schema_change = 'fail',
+        contract={"enforced": True}
     ) 
 }}
 

@@ -13,9 +13,9 @@ models:
       - name: free_float_pct
         data_type: numeric(10,4)
       - name: float_shares
-        data_type: numeric(20,2)
+        data_type: bigint
       - name: outstanding_shares
-        data_type: numeric(20,2)
+        data_type: bigint
       - name: source
         data_type: varchar
       - name: ingestion_ts
@@ -90,7 +90,7 @@ models:
       - name: price_avg_200d
         data_type: numeric(16,6)
       - name: market_cap
-        data_type: numeric(20,2)
+        data_type: bigint
       - name: exchange_code
         data_type: varchar(50)
       - name: open_price

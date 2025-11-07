@@ -1,3 +1,10 @@
+
+{{  config( 
+
+        contract={"enforced": True}
+    ) 
+}}
+
 WITH extend_json AS(
 
     SELECT source,
