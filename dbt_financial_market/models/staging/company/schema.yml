@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: stg_company_profile
+    description: "Structural data contract for company profile staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: company_name
+        data_type: varchar(200)
+      - name: cik
+        data_type: varchar(50)
+      - name: isin
+        data_type: varchar(50)
+      - name: cusip
+        data_type: varchar(50)
+      - name: country_code
+        data_type: varchar(20)
+      - name: industry
+        data_type: varchar(200)
+      - name: sector
+        data_type: varchar(100)
+      - name: stock_price
+        data_type: numeric(20,2)
+      - name: market_cap
+        data_type: bigint
+      - name: beta_value
+        data_type: numeric(10,6)
+      - name: last_dividend
+        data_type: numeric(10,6)
+      - name: price_range
+        data_type: varchar(50)
+      - name: price_change
+        data_type: numeric(10,6)
+      - name: price_change_pct
+        data_type: numeric(10,6)
+      - name: trading_volume
+        data_type: bigint
+      - name: avg_trading_volume
+        data_type: bigint
+      - name: reported_currency
+        data_type: varchar(10)
+      - name: exchange_full_name
+        data_type: varchar(200)
+      - name: exchange_code
+        data_type: varchar(100)
+      - name: ceo_name
+        data_type: varchar(100)
+      - name: company_description
+        data_type: text
+      - name: website_url
+        data_type: varchar(200)
+      - name: phone_number
+        data_type: varchar(50)
+      - name: address_line
+        data_type: varchar(200)
+      - name: city
+        data_type: varchar(50)
+      - name: state_code
+        data_type: varchar(50)
+      - name: postal_code
+        data_type: varchar(20)
+      - name: full_time_employees
+        data_type: integer
+      - name: ipo_date
+        data_type: date
+      - name: logo_url
+        data_type: varchar(300)
+      - name: has_default_logo
+        data_type: boolean
+      - name: is_etf
+        data_type: boolean
+      - name: is_actively_trading
+        data_type: boolean
+      - name: is_adr
+        data_type: boolean
+      - name: is_fund
+        data_type: boolean
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
