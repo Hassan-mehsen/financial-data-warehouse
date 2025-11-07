@@ -1,0 +1,72 @@
+version: 2
+models:
+
+  - name: stg_company_dividends
+    description: "Structural contract for company dividends staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: record_date
+        data_type: date
+      - name: payment_date
+        data_type: date
+      - name: declaration_date
+        data_type: date
+      - name: adj_dividend
+        data_type: numeric(10,8)
+      - name: dividend
+        data_type: numeric(10,8)
+      - name: yield
+        data_type: numeric(12,8)
+      - name: frequency
+        data_type: varchar(50)
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+  - name: stg_earnings_reports
+    description: "Structural contract for earnings reports staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: eps_actual
+        data_type: numeric(12,6)
+      - name: eps_estimated
+        data_type: numeric(12,6)
+      - name: revenue_actual
+        data_type: numeric(20,2)
+      - name: revenue_estimated
+        data_type: numeric(20,2)
+      - name: last_updated
+        data_type: date
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
+
+  - name: stg_stock_splits
+    description: "Structural contract for stock splits staging model"
+    columns:
+      - name: symbol
+        data_type: varchar(50)
+      - name: date
+        data_type: date
+      - name: date_key
+        data_type: integer
+      - name: numerator
+        data_type: integer
+      - name: denominator
+        data_type: integer
+      - name: source
+        data_type: varchar
+      - name: ingestion_ts
+        data_type: timestamp
