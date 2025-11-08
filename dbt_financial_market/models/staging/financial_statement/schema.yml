@@ -18,11 +18,11 @@ models:
         data_type: date
       - name: accepted_date
         data_type: date
-      - name: fiscal_year
+      - name: year
         data_type: integer
       - name: fiscal_period
         data_type: varchar(20)
-      - name: fiscal_quarter
+      - name: quarter
         data_type: integer
       - name: cash_and_cash_equivalents
         data_type: bigint
@@ -149,11 +149,11 @@ models:
         data_type: date
       - name: accepted_date
         data_type: date
-      - name: fiscal_year
+      - name: year
         data_type: integer
       - name: fiscal_period
         data_type: varchar(20)
-      - name: fiscal_quarter
+      - name: quarter
         data_type: integer
       - name: net_income
         data_type: bigint
@@ -256,11 +256,11 @@ models:
         data_type: date
       - name: accepted_date
         data_type: date
-      - name: fiscal_year
+      - name: year
         data_type: integer
       - name: fiscal_period
         data_type: varchar(20)
-      - name: fiscal_quarter
+      - name: quarter
         data_type: integer
       - name: revenue
         data_type: bigint

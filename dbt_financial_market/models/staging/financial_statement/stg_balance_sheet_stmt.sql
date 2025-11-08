@@ -24,7 +24,7 @@ renamed_and_typed AS (
        NULLIF( (elem->>'cik'), '')::VARCHAR(50)                                                AS cik,
        NULLIF( (elem->>'filingDate'), '')::date                                                AS filing_date,
        NULLIF( (elem->>'acceptedDate'), '')::timestamp::date                                   AS accepted_date,
-       NULLIF( (elem->>'fiscalYear'), '')::integer                                             AS fiscal_year,
+       NULLIF( (elem->>'fiscalYear'), '')::integer                                             AS year,
        NULLIF( (elem->>'period'), '')::VARCHAR(20)                                             AS fiscal_period,
        CASE
             WHEN elem->>'period' = 'Q1' THEN 1
@@ -32,7 +32,7 @@ renamed_and_typed AS (
             WHEN elem->>'period' = 'Q3' THEN 3
             WHEN elem->>'period' = 'Q4' THEN 4
             ELSE NULL
-        END AS fiscal_quarter,
+        END AS quarter,
 
        {{ bigint_safe_cast_dict
           ({
@@ -99,5 +99,5 @@ renamed_and_typed AS (
 SELECT *
 FROM renamed_and_typed
 WHERE date_key IS NOT NULL 
- OR fiscal_quarter IS NOT NULL
+ OR  quarter IS NOT NULL
  AND symbol IS NOT NULL
