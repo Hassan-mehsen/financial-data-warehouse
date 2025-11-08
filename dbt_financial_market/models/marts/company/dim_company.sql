@@ -1,4 +1,11 @@
 
+{{ 
+   config(  
+            on_schema_change='fail',
+            post_hook = create_index('id')
+        )
+}}
+
 SELECT 
         map.company_id AS id,
         scp.symbol,
@@ -27,7 +34,7 @@ SELECT
         scp.is_adr,
         scp.is_fund,
 
-        CURRENT_TIMESTAMP AS updated_at
+        CURRENT_TIMESTAMP AS created_at
         
 FROM {{ ref('stg_company_profile') }} AS scp
 JOIN {{ ref('company_id_map') }}  AS map
