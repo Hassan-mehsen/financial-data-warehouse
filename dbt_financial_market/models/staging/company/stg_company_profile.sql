@@ -27,7 +27,7 @@ renamed_and_typed AS (
        NULLIF( (elem->>'changePercentage'), '')::numeric(10,6)          AS price_change_pct,
        Round(NULLIF( (elem->>'volume'), '')::numeric, 0)::bigint        AS trading_volume,
        Round(NULLIF(elem->>'averageVolume', '')::numeric, 0)::bigint    AS avg_trading_volume,
-       NULLIF( (elem->>'currency'), '')::VARCHAR(10)                    AS reported_currency, 
+       NULLIF( (elem->>'currency'), '')::VARCHAR(5)                     AS reported_currency, 
        NULLIF( (elem->>'cik'), '')::VARCHAR(50)                         AS cik,
        NULLIF( (elem->>'isin'), '')::VARCHAR(50)                        AS isin,
        NULLIF( (elem->>'cusip'), '')::VARCHAR(50)                       AS cusip,
