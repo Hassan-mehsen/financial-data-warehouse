@@ -23,7 +23,7 @@ models:
       - name: year
         description: "Calendar year."
 
-      - name: fiscal_quarter
+      - name: quarter
         description: "Fiscal quarter (1-4)."
         tests:
           - accepted_values:
