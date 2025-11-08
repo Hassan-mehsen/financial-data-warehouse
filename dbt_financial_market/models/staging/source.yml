@@ -5,25 +5,65 @@ sources:
     description: "Raw schema loaded directly from EL (Extract-Load) jobs"
     database: finance_dwh
     schema: raw
+    loaded_at_field: ingestion_ts
 
     tables:
+      # Static data
       - name: company_profile
         description:  "Raw data about companies basic information and metadata"
+
+      # Daily market data
       - name: stock_quotes
         description: "Raw stock market quotes from the API for each company"
+        freshness:
+          warn_after: { count: 18, period: hour }
+          error_after: { count: 24, period: hour }
+
       - name: shares_float
         description: "Raw shares float data per company"
+        freshness:
+          warn_after: { count: 18, period: hour }
+          error_after: { count: 24, period: hour }
+
       - name: price_changes
         description: "Raw data tracking stock price variations over time periods for each company"
+        freshness:
+          warn_after: { count: 18, period: hour }
+          error_after: { count: 24, period: hour }
+
+    # Quarterly data
       - name: income_stmt
         description: "Raw income statement data for each company"
+        freshness:
+          warn_after: { count: 1500, period: hour } # 2 month
+          error_after: { count: 2100, period: hour } # 3 month
+
       - name: balance_sheet_stmt
         description: "Raw balance sheet statement data for each company"
+        freshness:
+          warn_after: { count: 1500, period: hour }
+          error_after: { count: 2100, period: hour }
+
       - name: cash_flow_stmt
         description: "Raw cash flow statement data for each company"
+        freshness:
+          warn_after: { count: 1500, period: hour }
+          error_after: { count: 2100, period: hour }
+
       - name: company_dividends
         description: "Raw companies dividend distributions data"
+        freshness:
+          warn_after: { count: 1500, period: hour }
+          error_after: { count: 2100, period: hour }
+
       - name: earnings_reports
         description: "Raw companies earnings reports"
+        freshness:
+          warn_after: { count: 1500, period: hour }
+          error_after: { count: 2100, period: hour }
+
       - name: stock_splits
         description: "Raw data about stock split for each company"
+        freshness:
+          warn_after: { count: 1500, period: hour }
+          error_after: { count: 2100, period: hour }
