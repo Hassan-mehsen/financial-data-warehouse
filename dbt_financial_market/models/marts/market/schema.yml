@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: fact_market_quotes
+    description: >
+      Fact table consolidating daily market data for each company.
+      Combines stock quotes, price change percentages, and share float information 
+      to provide a complete snapshot of a company's market position per trading day.
+      The composite key to identify each row is : (id, date_key)
+    columns:
+
+      - name: id
+        description: "Foreign key referencing the company dimension"
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key referencing the date dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+
+      - name: stock_price
+        description: "Closing stock price of the company for the day."
+
+      - name: price_change
+        description: "Absolute price change compared to the previous close."
+
+      - name: price_change_pct
+        description: "Percentage change in stock price compared to the previous close."
+
+      - name: trading_volume
+        description: "Number of shares traded during the day."
+
+      - name: day_low
+        description: "Lowest trading price recorded during the day."
+
+      - name: day_high
+        description: "Highest trading price recorded during the day."
+
+      - name: year_high
+        description: "Highest stock price observed during the last 12 months."
+
+      - name: year_low
+        description: "Lowest stock price observed during the last 12 months."
+
+      - name: market_cap
+        description: "Market capitalization of the company at the snapshot date."
+
+      - name: price_avg_50d
+        description: "50-day moving average of the stock price."
+
+      - name: price_avg_200d
+        description: "200-day moving average of the stock price."
+
+      - name: open_price
+        description: "Opening price of the stock for the day."
+
+      - name: last_close_price
+        description: "Closing price from the previous trading day."
+
+      - name: free_float_pct
+        description: "Percentage of shares available for public trading."
+
+      - name: float_shares
+        description: "Number of shares freely available for public trading."
+
+      - name: outstanding_shares
+        description: "Total number of shares outstanding for the company."
+
+      - name: change_pct_on_1d
+        description: "Percentage change in stock price over the last 1 day."
+
+      - name: change_pct_on_5d
+        description: "Percentage change in stock price over the last 5 days."
+
+      - name: change_pct_on_1m
+        description: "Percentage change in stock price over the last 1 month."
+
+      - name: change_pct_on_3m
+        description: "Percentage change in stock price over the last 3 months."
+
+      - name: change_pct_on_6m
+        description: "Percentage change in stock price over the last 6 months."
+
+      - name: change_pct_ytd
+        description: "Percentage change in stock price year-to-date."
+
+      - name: change_pct_on_1y
+        description: "Percentage change in stock price over the last year."
+
+      - name: change_pct_on_3y
+        description: "Percentage change in stock price over the last 3 years."
+
+      - name: change_pct_on_5y
+        description: "Percentage change in stock price over the last 5 years."
+
+      - name: change_pct_on_10y
+        description: "Percentage change in stock price over the last 10 years."
+
+      - name: change_pct_max
+        description: "Percentage change since the maximum historical value recorded."
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created in the data warehouse."
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'date_key']
