@@ -14,3 +14,21 @@ macros:
 
   - name: generate_schema_name
     description: "Generates schema name based on custom schema name without prefixing the default target schema."
+
+  - name: create_pks
+    description: >
+      Add a PRIMARY KEY constraint to the current model (`this`).
+      This macro should be used as a `post_hook` to enforce physical data integrity in the warehouse.
+    arguments:
+      - name: columns
+        type: list
+        description: List of columns that uniquely identify a record in the model
+
+  - name: create_index
+    description: > 
+      Create a database index on a specific column for performance optimization.
+      This macro can also be used as a post_hook to improve query speed on large fact tables.
+    arguments :
+      - name: column_name
+        type: string
+        description: Name of the column to index
