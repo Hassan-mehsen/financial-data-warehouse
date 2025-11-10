@@ -1,0 +1,153 @@
+version: 2
+models:
+
+ - name: fact_dividends
+   description: "Fact table containing dividend events per company and date, enriched with temporal attributes. 
+                 The composite key to identify each row is : (id, date_key)"
+   
+   columns:
+
+      - name: id
+        description: "Foreign key referencing the company dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key to date dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+
+      - name: declaration_date
+        description: "Date when the company officially announced the dividend"
+
+      - name: record_date
+        description: "Date determining shareholder eligibility for receiving the dividend"
+
+      - name: payment_date
+        description: "Date on which the dividend is actually paid to eligible shareholders"
+
+      - name: dividend
+        description: "Raw dividend amount per share declared by the company"
+
+      - name: adj_dividend
+        description: "Dividend amount adjusted for stock splits or reverse splits"
+
+      - name: yield
+        description: "Dividend yield percentage, adj_dividend / share_price"
+
+      - name: frequency
+        description: "Frequency of dividend payments (e.g., quarterly, annually)"
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created."
+
+   tests:
+    - dbt_utils.unique_combination_of_columns:
+        arguments:
+            combination_of_columns: ['id', 'date_key']
+
+
+
+ - name: fact_splits
+   description: "Fact table capturing stock split events per company and date, enriched with temporal attributes and ratio mertic.
+                 The composite key to identify each row is : (id, date_key)"
+   columns:
+
+      - name: id
+        description: "Foreign key referencing the company dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key referencing the date dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      
+      - name: year
+        description: "Calendar year"
+
+      - name: numerator
+        description: "Number of shares after the split"
+      
+      - name: denominator
+        description: "Number of shares before the split"
+
+      - name: ratio
+        description: "Split ratio computed as numerator / denominator."
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created."
+  
+   tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'date_key']
+
+
+ - name: fact_earnings
+   description: "Fact table containing company earnings per company and date, enriched with temporal attributes and surprise metrics.
+                 The composite key to identify each row is : (id, date_key, last_updated)"
+   columns:
+
+        - name: id
+          description: "Foreign key referencing the company dimension."
+          tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+        - name: date_key
+          description: "Foreign key referencing the date dimension."
+          tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+
+        - name: eps_actual
+          description: "Actual earnings per share reported for the period."
+
+        - name: eps_estimated
+          description: "Estimated earnings per share expected by analysts."
+        
+        - name: eps_surprise
+          description: "Earnings surprise, computed as eps_actual - eps_estimated."
+
+        - name: revenue_actual
+          description: "Actual company revenue reported for the period."
+        
+        - name: revenue_estimated
+          description: "Analyst estimated revenue for the period."
+        
+        - name: revenue_surprise
+          description: "Revenue surprise, computed as revenue_actual - revenue_estimated."
+        
+        - name: last_updated
+          description: "Date when the report was last updated."
+          tests: [not_null]
+        
+        - name: created_at
+          description: "Timestamp indicating when the record was created."
+   tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'date_key', 'last_updated']
+
