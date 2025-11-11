@@ -1,0 +1,371 @@
+version: 2
+
+models:
+  - name: fact_balance_sheet
+    description: "Fact table containing company balance sheet statements enriched with fiscal attributes and derived financial ratios."
+    
+    columns:
+      - name: id
+        description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key referencing the date dimension in YYYYMMDD format."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: year
+        description: "Fiscal year for which the balance sheet was reported."
+        tests: [not_null]
+
+      - name: quarter
+        description: "Fiscal quarter (1-4) derived from the reported fiscal period."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+
+      - name: fiscal_period
+        description: "Fiscal period label as reported by the company (e.g., Q1, Q2, FY)."
+
+      - name: reported_currency
+        description: "Currency in which the balance sheet values are reported (e.g., USD, EUR)."
+
+      - name: cash_and_cash_equivalents
+        description: "Cash and equivalents readily available for use."
+
+      - name: short_term_investments
+        description: "Investments with maturities less than one year."
+
+      - name: cash_and_short_term_investments
+        description: "Sum of cash and short-term investments."
+
+      - name: net_receivables
+        description: "Total receivables minus doubtful accounts."
+
+      - name: inventory
+        description: "Value of goods held for sale."
+
+      - name: total_current_assets
+        description: "Sum of all assets expected to be converted to cash within one year."
+
+      - name: property_plant_equipment_net
+        description: "Net value of property, plant, and equipment."
+
+      - name: goodwill
+        description: "Intangible value arising from acquisitions."
+
+      - name: intangible_assets
+        description: "Other intangible assets excluding goodwill."
+
+      - name: total_non_current_assets
+        description: "Sum of all assets not expected to be liquidated within one year."
+
+      - name: total_assets
+        description: "Sum of current and non-current assets."
+
+      - name: account_payables
+        description: "Money owed by the company to its suppliers."
+
+      - name: accrued_expenses
+        description: "Expenses that have been incurred but not yet paid."
+
+      - name: short_term_debt
+        description: "Debt obligations due within one year."
+
+      - name: total_current_liabilities
+        description: "Sum of all current liabilities."
+
+      - name: long_term_debt
+        description: "Debt obligations due beyond one year."
+
+      - name: deferred_revenue_non_current
+        description: "Revenue received but not yet earned, classified as long-term."
+
+      - name: total_non_current_liabilities
+        description: "Sum of all long-term liabilities."
+
+      - name: total_liabilities
+        description: "Sum of current and non-current liabilities."
+
+      - name: common_stock
+        description: "Value of common shares issued by the company."
+
+      - name: retained_earnings
+        description: "Cumulative earnings retained in the company."
+
+      - name: additional_paid_in_capital
+        description: "Capital received from shareholders above the par value of shares."
+
+      - name: total_equity
+        description: "Sum of all equity components, representing shareholders’ ownership."
+
+      - name: total_liabilities_and_equity
+        description: "Sum of liabilities and equity — must equal total assets."
+
+      - name: ratio_assets_to_liabilities
+        description: "Computed as total_assets / total_liabilities. Measures leverage."
+
+      - name: ratio_debt_to_equity
+        description: "Computed as total_debt / total_equity. Indicates financial leverage."
+
+      - name: ratio_current_assets
+        description: "Computed as total_current_assets / total_assets. Indicates liquidity level."
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created in the warehouse."
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'quarter', 'year']
+
+
+
+  - name: fact_cash_flow
+    description: "Fact table containing company cash flow statements, structured by activity type (operating, investing, financing) and enriched with fiscal attributes and derived ratios."
+    columns:
+  
+      - name: id
+        description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key referencing the date dimension in YYYYMMDD format."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: year
+        description: "Fiscal year for which the cash flow statement was reported."
+        tests: [not_null]
+
+      - name: quarter
+        description: "Fiscal quarter (1–4) derived from the reported fiscal period."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+
+      - name: fiscal_period
+        description: "Fiscal period label as reported by the company (e.g., Q1, Q2, FY)."
+
+      - name: reported_currency
+        description: "Currency in which the cash flow statement values are reported (e.g., USD, EUR)."
+
+      - name: net_income
+        description: "Net income used as the base for operating cash flow calculations."
+
+      - name: depreciation_and_amortization
+        description: "Non-cash charges for depreciation and amortization."
+
+      - name: stock_based_compensation
+        description: "Expenses related to stock-based employee compensation."
+
+      - name: working_capital_changes
+        description: "Net changes in working capital components such as receivables, payables, and inventory."
+
+      - name: net_cash_from_operating_activities
+        description: "Total cash generated or used by the company's core operations."
+
+      - name: investments_in_property_plant_equipment
+        description: "Capital expenditures for property, plant, and equipment (CAPEX)."
+
+      - name: net_acquisitions
+        description: "Net cash outflow related to acquisitions or mergers."
+
+      - name: purchases_of_investments
+        description: "Cash spent on purchasing financial investments."
+
+      - name: sales_maturities_of_investments
+        description: "Cash inflow from sales or maturities of investments."
+
+      - name: net_cash_from_investing_activities
+        description: "Total cash provided by or used in investing activities."
+
+      - name: net_debt_issuance
+        description: "Net cash from issuing or repaying debt."
+
+      - name: net_stock_issuance
+        description: "Net cash from issuing or repurchasing company shares."
+
+      - name: net_dividends_paid
+        description: "Total dividends paid to shareholders during the period."
+
+      - name: interest_paid
+        description: "Cash paid as interest on borrowings."
+
+      - name: other_financing_activities
+        description: "Miscellaneous cash flows related to financing activities."
+
+      - name: net_cash_from_financing_activities
+        description: "Total cash provided by or used in financing activities."
+
+      - name: effect_of_forex_changes_on_cash
+        description: "Impact of foreign exchange rate changes on cash balances."
+
+      - name: net_change_in_cash
+        description: "Overall change in cash position during the period."
+
+      - name: cash_at_beginning_of_period
+        description: "Cash balance at the start of the reporting period."
+
+      - name: cash_at_end_of_period
+        description: "Cash balance at the end of the reporting period."
+
+      - name: free_cash_flow
+        description: "Cash available after operational and capital expenditures (Operating CF - CAPEX)."
+
+      - name: ratio_fcf_to_net_income
+        description: "Ratio of free cash flow to net income, indicating how much net income is converted into cash."
+
+      - name: ratio_operating_cf_to_net_income
+        description: "Ratio of operating cash flow to net income, reflecting the cash quality of earnings."
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created in the warehouse."
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'year', 'quarter']
+
+
+  - name: fact_income_statement
+    description: "Fact table containing company income statements enriched with fiscal attributes, profitability ratios, and key performance indicators."
+    columns:
+      
+      - name: id
+        description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_company')
+              field: id
+
+      - name: date_key
+        description: "Foreign key referencing the date dimension in YYYYMMDD format."
+        tests: 
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: year
+        description: "Fiscal year for which the income statement was reported."
+        tests: [not_null]
+
+      - name: quarter
+        description: "Fiscal quarter (1–4) derived from the reported fiscal period."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+
+      - name: reported_currency
+        description: "Currency in which the income statement values are reported (e.g., USD, EUR)."
+
+      - name: revenue
+        description: "Total revenue earned by the company during the reporting period."
+
+      - name: cost_of_revenue
+        description: "Direct costs attributable to the production of goods or services sold."
+
+      - name: cost_and_expenses
+        description: "Total of costs and expenses, including cost of goods sold and operating expenses."
+
+      - name: gross_profit
+        description: "Revenue minus cost of revenue. Represents profit before operating expenses."
+
+      - name: rd_expenses
+        description: "Research and development expenses incurred during the reporting period."
+
+      - name: selling_marketing_expenses
+        description: "Costs related to selling and marketing operations."
+
+      - name: general_admin_expenses
+        description: "General and administrative expenses, including management and support functions."
+
+      - name: operating_expenses
+        description: "Total expenses incurred from core business operations."
+
+      - name: ebitda
+        description: "Earnings before interest, taxes, depreciation, and amortization."
+
+      - name: ebit
+        description: "Earnings before interest and taxes. Also referred to as operating income."
+
+      - name: interest_income
+        description: "Interest income earned on investments or cash holdings."
+
+      - name: interest_expense
+        description: "Interest paid on debt obligations."
+
+      - name: total_other_income_expenses_net
+        description: "Net of other non-operating income and expenses."
+
+      - name: income_before_tax
+        description: "Total income earned before accounting for tax expenses."
+
+      - name: net_income_continuing_ops
+        description: "Net income derived from continuing operations."
+
+      - name: net_income_discontinued_ops
+        description: "Net income (or loss) from discontinued operations."
+
+      - name: net_income
+        description: "Total net income after all expenses, taxes, and adjustments."
+
+      - name: net_income_deductions
+        description: "Adjustments or deductions applied to net income."
+
+      - name: weighted_avg_shares_out
+        description: "Weighted average number of shares outstanding during the period."
+
+      - name: weighted_avg_shares_out_diluted
+        description: "Weighted average number of diluted shares outstanding."
+
+      - name: eps
+        description: "Earnings per share (basic). Represents net income divided by weighted average shares."
+
+      - name: eps_diluted
+        description: "Earnings per diluted share, adjusted for convertible instruments."
+
+      - name: gross_margin
+        description: "Gross profit divided by revenue. Measures production efficiency."
+
+      - name: operating_margin
+        description: "EBIT divided by revenue. Indicates operational profitability."
+
+      - name: net_margin
+        description: "Net income divided by revenue. Reflects overall profitability."
+
+      - name: rd_to_revenue_ratio
+        description: "R&D expenses divided by revenue. Measures investment intensity in innovation."
+
+      - name: created_at
+        description: "Timestamp indicating when the record was created in the warehouse."
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['id', 'year', 'quarter']
