@@ -7,17 +7,16 @@ models:
 
       - name: date_key
         description: "Primiray key in YYYYMMDD integer format."
-        tests: ["unique", "not_null"]
+        data_tests: ["unique", "not_null"]
 
       - name: date
         description: "Actual date value."
-        tests: ["not_null"]
+        data_tests: ["not_null"]
 
       - name: month
         description: "Month number (1-12)."
-        tests:
+        data_tests:
           - accepted_values:
-              arguments:
                 values: [1,2,3,4,5,6,7,8,9,10,11,12]
 
       - name: year
@@ -25,16 +24,14 @@ models:
 
       - name: quarter
         description: "Fiscal quarter (1-4)."
-        tests:
+        data_tests:
           - accepted_values:
-              arguments:
                 values: [1,2,3,4]
 
       - name: day_of_week
         description: "Day of week number (1=Monday, 7=Sunday)."
-        tests:
+        data_tests:
           - accepted_values:
-              arguments:
                 values: [1,2,3,4,5,6,7]
               
       - name: is_weekend

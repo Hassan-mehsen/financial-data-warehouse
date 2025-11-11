@@ -9,7 +9,7 @@ models:
 
       - name: id
         description: "Foreign key referencing the company dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -17,7 +17,7 @@ models:
 
       - name: date_key
         description: "Foreign key to date dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -48,9 +48,8 @@ models:
       - name: created_at
         description: "Timestamp indicating when the record was created."
 
-   tests:
+   data_tests:
     - dbt_utils.unique_combination_of_columns:
-        arguments:
             combination_of_columns: ['id', 'date_key']
 
 
@@ -62,7 +61,7 @@ models:
 
       - name: id
         description: "Foreign key referencing the company dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -70,7 +69,7 @@ models:
 
       - name: date_key
         description: "Foreign key referencing the date dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -88,15 +87,14 @@ models:
 
       - name: ratio
         description: "Split ratio computed as numerator / denominator."
-        tests:
+        data_tests:
           - not_null
 
       - name: created_at
         description: "Timestamp indicating when the record was created."
   
-   tests:
+   data_tests:
     - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'date_key']
 
 
@@ -107,7 +105,7 @@ models:
 
         - name: id
           description: "Foreign key referencing the company dimension."
-          tests: 
+          data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -115,7 +113,7 @@ models:
 
         - name: date_key
           description: "Foreign key referencing the date dimension."
-          tests: 
+          data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -142,12 +140,11 @@ models:
         
         - name: last_updated
           description: "Date when the report was last updated."
-          tests: [not_null]
+          data_tests: [not_null]
         
         - name: created_at
           description: "Timestamp indicating when the record was created."
-   tests:
+   data_tests:
     - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'date_key', 'last_updated']
 

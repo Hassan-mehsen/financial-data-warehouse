@@ -7,7 +7,7 @@ models:
 
       - name: id
         description: "Primary key assigned to each company"
-        tests: ["not_null","unique"]
+        data_tests: ["not_null","unique"]
 
       - name: symbol
         description: "stock ticker symbol identifying each company in the dataset"

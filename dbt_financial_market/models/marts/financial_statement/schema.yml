@@ -7,7 +7,7 @@ models:
     columns:
       - name: id
         description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -15,7 +15,7 @@ models:
 
       - name: date_key
         description: "Foreign key referencing the date dimension in YYYYMMDD format."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -23,14 +23,13 @@ models:
 
       - name: year
         description: "Fiscal year for which the balance sheet was reported."
-        tests: [not_null]
+        data_tests: [not_null]
 
       - name: quarter
         description: "Fiscal quarter (1-4) derived from the reported fiscal period."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: [1, 2, 3, 4]
 
       - name: fiscal_period
@@ -122,11 +121,10 @@ models:
 
       - name: created_at
         description: "Timestamp indicating when the record was created in the warehouse."
-        tests: [not_null]
+        data_tests: [not_null]
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'quarter', 'year']
 
 
@@ -137,7 +135,7 @@ models:
   
       - name: id
         description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -145,7 +143,7 @@ models:
 
       - name: date_key
         description: "Foreign key referencing the date dimension in YYYYMMDD format."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -153,14 +151,13 @@ models:
 
       - name: year
         description: "Fiscal year for which the cash flow statement was reported."
-        tests: [not_null]
+        data_tests: [not_null]
 
       - name: quarter
         description: "Fiscal quarter (1–4) derived from the reported fiscal period."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: [1, 2, 3, 4]
 
       - name: fiscal_period
@@ -240,11 +237,10 @@ models:
 
       - name: created_at
         description: "Timestamp indicating when the record was created in the warehouse."
-        tests: [not_null]
+        data_tests: [not_null]
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'year', 'quarter']
 
 
@@ -254,7 +250,7 @@ models:
       
       - name: id
         description: "Unique identifier assigned to each company. Foreign key referencing the company dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -262,7 +258,7 @@ models:
 
       - name: date_key
         description: "Foreign key referencing the date dimension in YYYYMMDD format."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -270,14 +266,13 @@ models:
 
       - name: year
         description: "Fiscal year for which the income statement was reported."
-        tests: [not_null]
+        data_tests: [not_null]
 
       - name: quarter
         description: "Fiscal quarter (1–4) derived from the reported fiscal period."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: [1, 2, 3, 4]
 
       - name: reported_currency
@@ -363,9 +358,8 @@ models:
 
       - name: created_at
         description: "Timestamp indicating when the record was created in the warehouse."
-        tests: [not_null]
+        data_tests: [not_null]
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'year', 'quarter']

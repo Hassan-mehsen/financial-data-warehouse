@@ -15,7 +15,7 @@ macros:
   - name: generate_schema_name
     description: "Generates schema name based on custom schema name without prefixing the default target schema."
 
-  - name: create_pks
+  - name: add_PKs
     description: >
       Add a PRIMARY KEY constraint to the current model (`this`).
       This macro should be used as a `post_hook` to enforce physical data integrity in the warehouse.

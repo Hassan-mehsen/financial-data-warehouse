@@ -11,7 +11,7 @@ models:
 
       - name: id
         description: "Foreign key referencing the company dimension"
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_company')
@@ -19,7 +19,7 @@ models:
 
       - name: date_key
         description: "Foreign key referencing the date dimension."
-        tests: 
+        data_tests: 
           - not_null
           - relationships:
               to: ref('dim_date')
@@ -109,9 +109,8 @@ models:
 
       - name: created_at
         description: "Timestamp indicating when the record was created in the data warehouse."
-        tests: [not_null]
+        data_tests: [not_null]
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
-          arguments:
             combination_of_columns: ['id', 'date_key']
