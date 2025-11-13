@@ -42,25 +42,32 @@ models:
     +persist_docs:
       columns: false
       
+    
     staging:
       +schema: staging   
       +materialized: view
       +tags: ["silver"]
+      +config:
+        contract:
+          enforced: true
+    
     
     marts:
       +schema: marts
-      +materialized: incremental
+      +materialized: table 
       +tags: ["gold"]
       
       company: 
-        +materialized: table 
         +tags: ["dim", "info"]
 
       corporate_actions:
-        +tags: ["events", "corporate"]
+        +materialized: incremental
+        +tags: ["events", "corporate", "incremental"]
 
       financial_statement:
-        +tags: ["financials", "statements"]
+        +materialized: incremental
+        +tags: ["financials", "statements", "incremental"]
       
       market: 
-        +tags: ["market", "price"]
+        +materialized: incremental
+        +tags: ["market", "price", "incremental"]
