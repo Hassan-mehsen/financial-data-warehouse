@@ -1,0 +1,16 @@
+.env
+
+__pycache__
+
+src/el/runners/*.py
+
+logs/
+
+ariflow/*
+!ariflow/dags
+
+
+dbt_financial_market/target/
+dbt_financial_market/dbt_packages/
+dbt_financial_market/logs/
+dbt_financial_market/package-lock.yml
