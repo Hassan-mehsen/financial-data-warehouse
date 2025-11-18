@@ -2,13 +2,11 @@ from .database_connector import DatabaseConnector
 from datetime import datetime, timezone
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from dotenv import load_dotenv
 from sqlalchemy import insert
 from pathlib import Path
 import requests
 import os
 
-load_dotenv()
 
 
 class ExtractLoadPipeline(DatabaseConnector, ABC):
@@ -42,7 +40,7 @@ class ExtractLoadPipeline(DatabaseConnector, ABC):
             "VIAC", "VWO", "VZ", "WBA", "WFC", "WMT", "XOM", "ZM"
         ]
 
-    log_path = Path(__file__).resolve().parents[2] / "logs" / "ingestion.log"
+    log_path = Path(__file__).resolve().parents[2] / "el_logs" / "ingestion.log"
 
     def __init__(self, source: str, table: str):
         super().__init__()
