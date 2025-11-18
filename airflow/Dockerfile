@@ -9,6 +9,10 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
+# Add docker group with same GID as host
+RUN groupadd -g 999 docker || true && \
+    usermod -aG docker airflow
+
 USER airflow
 
 COPY requirements.txt /requirements.txt
