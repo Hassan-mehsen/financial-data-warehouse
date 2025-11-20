@@ -1,12 +1,14 @@
 from airflow.providers.standard.operators.python import PythonOperator
 from airflow.providers.standard.operators.bash import BashOperator
+from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.sdk import dag, task, task_group
 
 from datetime import datetime, timedelta
 from pathlib import Path
 import sys
+import os
 
-src_path = Path(__file__).resolve().parents[2]
+src_path = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(src_path))
 # import EL classe's
 from src.el.el_jobs.price_changes_el_job import PriceChangesELJob
@@ -29,8 +31,8 @@ default_args = {
 
 @dag(
     description="Orchestrates full ELT pipeline for Financial Market projectt",
-    schedule="@daily",
-    start_date=datetime(2025, 11, 14, 12    ),  # 10:00 UTC
+    start_date=datetime(2025, 11, 18, 11, 0),
+    schedule="0 11 * * *",  #  11:00 UTC everyday
     catchup=False,
     tags=["elt", "financial_market"],
     default_args=default_args,
@@ -57,17 +59,28 @@ def market_elt_dag():
 
     wait_task = BashOperator(task_id="wait", bash_command="sleep 5")
 
-    transform = BashOperator(
-        task_id="transform_fresh_data", 
-        bash_command="""
-            source /home/hm/virtual_environment/bin/activate && \
-            cd /home/hm/Desktop/Data_engineer/Projects/financial_warehouse/dbt_financial_market && \
-            dbt build
-        """
+    dbt_build = DockerOperator(
+        task_id = "dbt_build",
+        image = "dbt_finance",
+        command="dbt build",
+        docker_url = "unix:///var/run/docker.sock",
+        auto_remove="force",
+        mount_tmp_dir=False,
+        environment={
+
+            "DBT_PROFILES_DIR": os.getenv("DBT_PROFILES_DIR"),
+            "DBT_DB_HOST":      os.getenv("DBT_DB_HOST"),
+            "DBT_DB_PORT":      os.getenv("DBT_DB_PORT"),
+            "DBT_DB_USER":      os.getenv("DBT_DB_USER"),
+            "DBT_DB_PASSWORD":  os.getenv("DBT_DB_PASSWORD"),
+            "DBT_DB_NAME":      os.getenv("DBT_DB_NAME"),
+            "DBT_DB_SCHEMA":    os.getenv("DBT_DB_SCHEMA"),
+        },
+        extra_hosts={"host.docker.internal": "host-gateway"},
     )
 
     # Orchestration
-    extract_and_load_market_data() >> wait_task >> transform
+    extract_and_load_market_data() >> wait_task >> dbt_build
 
 
 market_elt_dag()
