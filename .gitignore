@@ -4,13 +4,15 @@ __pycache__
 
 src/el/runners/*.py
 
+el_logs/
 logs/
 
-ariflow/*
-!ariflow/dags
-
+airflow/logs
+airflow/airflow.cfg
+airflow/simple_auth_manager_passwords.json.generated
 
 dbt_financial_market/target/
 dbt_financial_market/dbt_packages/
 dbt_financial_market/logs/
 dbt_financial_market/package-lock.yml
+dbt_financial_market/.user.yml
