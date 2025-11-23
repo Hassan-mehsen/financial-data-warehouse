@@ -1,7 +1,8 @@
 
 {{ 
     config(
-            incremental_strategy = 'append',
+            unique_key: ["id", "date_key", "stock_price"],
+            incremental_strategy = 'merge',
             on_schema_change='fail',
             post_hook = [
                 create_index('id'),
@@ -101,20 +102,3 @@ SELECT
         created_at
 
 FROM enriched_market em
-{% if is_incremental() %}
-
--- In other models, incremental logic is based on ingestion_ts.
--- Howerver, this model is built on 3 different sources(endpoints) with 3 different ingestion_ts, 
--- so using ingestion_ts is unreliable here
--- The current approach uses a composite key (id, date_key) to ensure data integrity at the cost of slightly reduced performance.
-  
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM {{ this }} AS t
-    WHERE t.id = em.id
-      AND t.date_key = em.date_key
-)
-
-{% endif%}
- 
-        
