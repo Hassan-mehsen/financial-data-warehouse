@@ -1,7 +1,7 @@
 
 {{ 
     config(
-            unique_key: ["id", "date_key", "stock_price"],
+            unique_key= ["id", "date_key", "stock_price"],
             incremental_strategy = 'merge',
             on_schema_change='fail',
             post_hook = [
