@@ -113,4 +113,4 @@ models:
 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-            combination_of_columns: ['id', 'date_key']
+            combination_of_columns: ['id', 'date_key', 'stock_price']
