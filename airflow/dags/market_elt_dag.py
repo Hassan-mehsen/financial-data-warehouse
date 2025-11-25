@@ -62,7 +62,7 @@ def market_elt_dag():
     dbt_build = DockerOperator(
         task_id = "dbt_build",
         image = "dbt_finance",
-        command="dbt build",
+        command="dbt build --select tag:market+",
         docker_url = "unix:///var/run/docker.sock",
         auto_remove="force",
         mount_tmp_dir=False,
